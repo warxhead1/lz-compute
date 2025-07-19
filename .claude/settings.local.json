@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(alembic init:*)",
+      "Bash(alembic revision:*)",
+      "Bash(uv pip install:*)",
+      "Bash(python -m pytest tests/integration/test_auth_flows.py -v)",
+      "Bash(python -m pytest tests/integration/test_auth_flows.py::TestAuthenticationFlows::test_user_registration_flow -v)",
+      "Bash(python -m pytest tests/integration/test_auth_flows.py::TestAuthenticationFlows::test_user_registration_flow -v -s)",
+      "Bash(python -m pytest tests/integration/test_auth_flows.py -v --tb=short)",
+      "Bash(python:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(pytest:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": []
+  }
+}

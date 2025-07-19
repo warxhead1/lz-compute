@@ -1,0 +1,89 @@
+{
+  "name": "Agentic Lazy Module",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "TZ": "${localEnv:TZ:America/Denver}"
+    }
+  },
+  "runArgs": [
+    "--cap-add=NET_ADMIN",
+    "--cap-add=NET_RAW"
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "node",
+      "userUid": "1000",
+      "userGid": "1000"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "ppa": true,
+      "version": "os-provided"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true,
+      "dockerDashComposeVersion": "v2"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "typescript.preferences.quoteStyle": "single",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll": "explicit",
+          "source.fixAll.eslint": "explicit"
+        },
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
+    }
+  },
+  "postCreateCommand": ".devcontainer/setup.sh",
+  "remoteUser": "node",
+  "workspaceFolder": "/lz-compute",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/lz-compute,type=bind,consistency=delegated",
+  "mounts": [
+    "source=${localEnv:HOME}/.zshrc,target=/home/node/.zshrc,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.oh-my-zsh,target=/home/node/.oh-my-zsh,type=bind,consistency=cached",
+    "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
+    "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume",
+    "source=${localEnv:HOME}/.gemini,target=/home/node/.gemini,type=bind,consistency=cached"
+  ],
+  "remoteEnv": {
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    "POWERLEVEL9K_DISABLE_GITSTATUS": "true"
+  },
+  "forwardPorts": [
+    3000,
+    8080,
+    9229
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Development Server",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Dashboard",
+      "onAutoForward": "silent"
+    },
+    "9229": {
+      "label": "Node Debug",
+      "onAutoForward": "silent"
+    }
+  }
+}
